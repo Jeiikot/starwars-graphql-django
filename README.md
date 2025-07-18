@@ -1,23 +1,69 @@
-
 # Star Wars GraphQL API
+![Build Status](https://github.com/Jeiikot/starwars-graphql-django/actions/workflows/ci-tests.yml/badge.svg)
 
 A GraphQL API built with **Django** and **Graphene** to manage information from the Star Wars universe: characters, movies, and planets.
+Easily query, create, and relate entities with full validation and real-world data.
 
 ---
 
 ## 🚀 Description
 
-This project allows you to query, filter, and create characters, movies, and planets from the Star Wars universe through a Relay-compatible GraphQL API.
+This project enables you to **query, filter, and create** characters, movies, and planets from the Star Wars universe through a **Relay-compatible GraphQL API**.
 
-- List and search characters (name filter)
+- List and search characters (with name filter)
 - Query movies associated with each character
-- Detailed information about movies and planets
+- Get detailed information about movies and planets
 - Mutations to create characters, movies, and planets
-- Easily relate characters, movies, and planets
-- Clean, validated, and documented code
+- Easily relate entities and explore data
+- Automated data loading from the public SWAPI
+- Clean, modular, and validated codebase
+- Dockerized environment for easy setup
 
 ---
 
+## 📁 Project Structure & Technical Overview
+
+```
+starwars-graphql-django/
+├── api/                      
+├── services/                          
+│ └── populate.py                      # Script to populate data from SWAPI.
+├── starwars/                          # Django app.
+│ ├── management/
+│ │ └── commands/
+│ │     └── load_starwars_data.py      # Custom management command to load data from SWAPI.
+│ ├──  schema/                         
+│     ├── mutations.py                 # GraphQL mutations.
+│     ├── query.py                     # GraphQL queries.
+│     └── types.py                     # GraphQL types.
+│ └── tests/
+│     ├──  test_characters.py          # Test GraphQL characters.
+│     ├──  test_movies.py              # Test GraphQL movies.
+│     ├──  test_mutations.py           # Test GraphQL mutations.
+│     ├──  test_planets.py             # Test GraphQL planets.
+│     └──  test_schema.py              # Test GraphQL schema.
+│ └── models.py                        # Django models.
+├── tests/
+│ ├── conftest.py                      # Pytest configuration.
+│ └── fixtures.py                      # Pytest fixtures.
+├── utils/
+│ ├── constants.py                      # Constants.
+│ └── logger.py                         # Logger.
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+└── manage.py
+```
+
+- **Django** + **Graphene** for a modern GraphQL API.
+- **Custom management commands** for automated SWAPI data seeding.
+- **Modular**: separation of API, business logic, and data models.
+- **Testing**: with pytest and coverage.
+- **Docker**: for easy local development.
+
+
+---
 ## 🛠️ Installation and Setup
 
 1. **Clone the repository:**
@@ -42,25 +88,32 @@ This project allows you to query, filter, and create characters, movies, and pla
    python manage.py migrate
    ```
 
-5. **Load initial data from SWAPI:**
+5. **Load real Star Wars data automatically from SWAPI:**
    ```bash
-   python manage.py load_starwars_data
+     python manage.py load_starwars_data
    ```
+   > **Tip:** This command fetches all characters, movies, and planets from the [public SWAPI](https://swapi.dev/), and loads them into your local database.
 
-6. **Start the development server:**
+6. **(Optional) Run with Docker:**
    ```bash
-   python manage.py runserver
+    docker-compose up --build
    ```
+   > Docker is fully supported for local development and testing.
 
+7. **Start the development server (if not using Docker):**
+   ```bash
+    python manage.py runserver
+   ```
 ---
 
 ## 🔎 Using the API (GraphQL Playground)
 
-Go to `http://localhost:8000/graphql/` to explore the API using GraphiQL or any GraphQL client.
+Open [`http://localhost:8000/graphql/`](http://localhost:8000/graphql/) in your browser to access the **GraphiQL** interface.  
+You can explore the full API schema, run queries/mutations, and view in-code documentation.
 
 ---
 
-### **Example Query: List Characters**
+### 🧩 Example Query: List Characters
 
 ```graphql
 {
@@ -71,9 +124,7 @@ Go to `http://localhost:8000/graphql/` to explore the API using GraphiQL or any 
         name
         birthYear
         species
-        homeworld {
-          name
-        }
+        homeworld { name }
         movies {
           edges {
             node {
@@ -81,13 +132,7 @@ Go to `http://localhost:8000/graphql/` to explore the API using GraphiQL or any 
               openingCrawl
               director
               producers
-              planets {
-                edges {
-                  node {
-                    name
-                  }
-                }
-              }
+              planets { edges { node { name } } }
             }
           }
         }
@@ -99,7 +144,7 @@ Go to `http://localhost:8000/graphql/` to explore the API using GraphiQL or any 
 
 ---
 
-### **Example Mutation: Create Character**
+### ✍️ Example Mutation: Create Character
 
 ```graphql
 mutation {
@@ -113,16 +158,8 @@ mutation {
     character {
       id
       name
-      homeworld {
-        name
-      }
-      movies {
-        edges {
-          node {
-            title
-          }
-        }
-      }
+      homeworld { name }
+      movies { edges { node { title } } }
     }
   }
 }
@@ -130,7 +167,7 @@ mutation {
 
 ---
 
-### **Example Mutation: Create Planet**
+### 🌍 Example Mutation: Create Planet
 
 ```graphql
 mutation {
@@ -151,7 +188,7 @@ mutation {
 
 ---
 
-### **Example Mutation: Create Movie**
+### 🎬 Example Mutation: Create Movie
 
 ```graphql
 mutation {
@@ -168,13 +205,7 @@ mutation {
       id
       title
       director
-      planets {
-        edges {
-          node {
-            name
-          }
-        }
-      }
+      planets { edges { node { name } } }
     }
   }
 }
@@ -205,19 +236,48 @@ To generate a coverage HTML report:
   pytest --cov=starwars --cov-report=html
 ```
 
-Then open htmlcov/index.html in your browser to see the coverage report.
+Then open `htmlcov/index.html` in your browser to see the coverage report.
 
 ---
 
 ## 📚 API Technical Documentation
 
-This API is fully self-documented using the GraphiQL interface available at [`/graphql/`](http://localhost:8000/graphql/).
+- The API is fully self-documented via the **GraphiQL** explorer at [`/graphql/`](http://localhost:8000/graphql/).
+- Each type, query, and mutation includes docstrings that appear as inline documentation in GraphiQL.
+- All usage examples (queries, mutations) are available here and in GraphiQL.
+- Automated data seeding from SWAPI simplifies onboarding and demos.
 
-- **GraphiQL** is an interactive in-browser tool that allows you to explore all queries, mutations, types, and see their descriptions (taken from the code docstrings).
-- All mutations, queries, and fields include inline documentation.
-- Example queries and mutations are available directly in the README and in the GraphiQL documentation explorer.
-
-**Note:** Swagger and Redoc are standards for REST APIs, but are not commonly used in GraphQL projects.  
-In GraphQL, the best practice is interactive schema documentation with GraphiQL.
+> **Note:** Swagger and Redoc are REST standards; for GraphQL, **interactive schema documentation** is the norm.
 
 ---
+
+## 🐳 Docker Support
+
+Build and start the project using Docker with:
+
+```bash
+  docker-compose up --build
+```
+
+All dependencies and environment setup are managed for you. Great for quick onboarding and teamwork.
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+### 💡 **Highlights / What Makes This Project Professional**
+
+- **Modern Django & GraphQL stack**
+- **Automated real data loading** from public APIs
+- **Clean, modular code structure**
+- **Full Docker support**
+- **Well-documented for easy onboarding**
+- **Thorough testing & test coverage reporting**
+
+---
+
+> Automated testing and quality checks with [GitHub Actions](https://github.com/features/actions).
