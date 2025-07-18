@@ -154,6 +154,13 @@ class CreateCharacter(graphene.Mutation):
         name = String(required=True)
         species = String()
         birth_year = String()
+        height = String()
+        mass = String()
+        hair_color = String()
+        skin_color = String()
+        eye_color = String()
+        gender = String()
+        homeworld = graphene.ID()
         movies = List(graphene.ID)
 
     character = Field(CharacterNode)
