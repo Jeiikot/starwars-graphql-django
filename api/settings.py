@@ -158,3 +158,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 GRAPHENE = {
     "SCHEMA": "starwars.schema.schema",
 }
+
+CSRF_TRUSTED_ORIGINS = ['https://starwars-graphql-django.onrender.com']
