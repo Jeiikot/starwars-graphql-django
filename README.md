@@ -263,6 +263,17 @@ All dependencies and environment setup are managed for you. Great for quick onbo
 
 ---
 
+---
+
+## 🚀 Production Deployment (Gunicorn)
+
+For production environments, use [Gunicorn](https://gunicorn.org/) as your WSGI server:
+
+```bash
+   gunicorn api.starwars.wsgi
+```
+
+---
 ## 📄 License
 
 MIT
