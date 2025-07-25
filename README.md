@@ -15,6 +15,13 @@ This project started as part of the LQN Technical Challenge.
    - The main and develop branches include further improvements.
 
    > Feel free to check the lqn-test branch for the exact version delivered for the technical assessment.
+ 
+🌐 [Live Demo on Render](https://starwars-graphql-django.onrender.com/graphql/)
+
+> Try the project live! Explore the API through the GraphiQL playground hosted on Render.
+
+>  ⚠️ Note: It may take a few seconds to wake up if the server was inactive (free tier limitation).
+
 
 ---
 
