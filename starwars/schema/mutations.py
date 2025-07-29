@@ -1,5 +1,5 @@
 # Graphene
-from graphene import String, List, Field, relay
+from graphene import String, List, Field, relay, Date
 import graphene
 
 # Models
@@ -90,16 +90,12 @@ class CreateMovie(graphene.Mutation):
         director = String(required=True)
         producers = String(required=True)
         planets = List(graphene.ID)
-        release_date = String(required=True)
+        release_date = Date(required=True)
 
     movie = Field(MovieNode)
 
     def mutate(self, info, title, episode_id, opening_crawl=None, director=None, producers=None,
                planets=None, release_date=None):
-        try:
-            release_date_parsed = datetime.strptime(release_date, "%Y-%m-%d").date()
-        except Exception:
-            raise Exception("release_date must be in format YYYY-MM-DD")
 
         movie = {
             "title": title,
