@@ -1,5 +1,5 @@
 # Graphene
-from graphene import String, List, Field, relay
+from graphene import String, List, Field, relay, Date
 import graphene
 
 # Models
@@ -45,21 +45,21 @@ class CreatePlanet(graphene.Mutation):
 
     def mutate(self, info, name, climate=None, terrain=None, rotation_period=None, orbital_period=None,
                diameter=None, gravity=None, surface_water=None, population=None):
-        fields = dict(
-            name=name,
-            climate=climate or '',
-            terrain=terrain or '',
-            rotation_period=rotation_period or '',
-            orbital_period=orbital_period or '',
-            diameter=diameter or '',
-            gravity=gravity or '',
-            surface_water=surface_water or '',
-            population=population or ''
-        )
+
+        fields = {
+            "name": name,
+            "climate": climate or "",
+            "terrain": terrain or "",
+            "rotation_period": rotation_period or "",
+            "orbital_period": orbital_period or "",
+            "diameter": diameter or "",
+            "gravity": gravity or "",
+            "surface_water": surface_water or "",
+            "population": population or ""
+        }
 
         # Create Planet
-        planet = Planet(**fields)
-        planet.save()
+        planet = Planet.objects.create(**fields)
 
         return CreatePlanet(planet=planet)
 
@@ -90,26 +90,22 @@ class CreateMovie(graphene.Mutation):
         director = String(required=True)
         producers = String(required=True)
         planets = List(graphene.ID)
-        release_date = String(required=True)
+        release_date = Date(required=True)
 
     movie = Field(MovieNode)
 
     def mutate(self, info, title, episode_id, opening_crawl=None, director=None, producers=None,
                planets=None, release_date=None):
-        try:
-            release_date_parsed = datetime.strptime(release_date, "%Y-%m-%d").date()
-        except Exception:
-            raise Exception("release_date must be in format YYYY-MM-DD")
 
-        movie = Movie(
-            title=title,
-            episode_id=episode_id,
-            opening_crawl=opening_crawl or '',
-            director=director,
-            producers=producers,
-            release_date=release_date_parsed,
-        )
-        movie.save()
+        movie = {
+            "title": title,
+            "episode_id": episode_id,
+            "opening_crawl": opening_crawl or "",
+            "director": director,
+            "producers": producers,
+            "release_date": release_date
+        }
+        movie = Movie.objects.create(**movie)
 
         # Add Planets
         if planets:
@@ -167,18 +163,18 @@ class CreateCharacter(graphene.Mutation):
 
     def mutate(self, info, name, species=None, birth_year=None, height=None, mass=None, hair_color=None,
                skin_color=None, eye_color=None, gender=None, homeworld=None, movies=None):
-        fields = dict(
-            name=name,
-            species=species or '',
-            birth_year=birth_year or '',
-            height=height or '',
-            mass=mass or '',
-            hair_color=hair_color or '',
-            skin_color=skin_color or '',
-            eye_color=eye_color or '',
-            gender=gender or ''
-        )
 
+        fields = {
+            "name": name,
+            "species": species or "",
+            "birth_year": birth_year or "",
+            "height": height or "",
+            "mass": mass or "",
+            "hair_color": hair_color or "",
+            "skin_color": skin_color or "",
+            "eye_color": eye_color or "",
+            "gender": gender or ""
+        }
         # Add homeworld
         if homeworld:
             planet_instance = relay.Node.get_node_from_global_id(info, homeworld, only_type=PlanetNode)
@@ -187,8 +183,7 @@ class CreateCharacter(graphene.Mutation):
             fields["homeworld"] = planet_instance
 
         # Create Character
-        character = Character(**fields)
-        character.save()
+        character = Character.objects.create(**fields)
 
         # Add Movies
         if movies:

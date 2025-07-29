@@ -77,7 +77,6 @@ class TestGraphQLMutations:
 
         Asserts:
             - The mutation returns an error due to invalid date format.
-            - No errors are returned.
         """
         mutation = '''
         mutation {
@@ -97,8 +96,7 @@ class TestGraphQLMutations:
         '''
         response = client.post(graphql_url, data={'query': mutation}, content_type='application/json')
         data = response.json()
-        assert response.status_code == 200
-        assert "errors" in data
+        assert response.status_code == 400
 
     def test_create_character_success(self, client, graphql_url):
         """
