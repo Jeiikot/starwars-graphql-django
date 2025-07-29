@@ -1,5 +1,14 @@
 # Star Wars GraphQL API
-![Build Status](https://github.com/Jeiikot/starwars-graphql-django/actions/workflows/ci-tests.yml/badge.svg)
+
+![Python 3.11](https://img.shields.io/badge/Python-3.11-blue)
+![Django 4.x](https://img.shields.io/badge/Django-4.x-green?logo=django)
+![GraphQL API](https://img.shields.io/badge/GraphQL-API-ff69b4?logo=graphql)
+![Graphene-Django](https://img.shields.io/badge/Graphene-Django-663399?logo=python)
+![Django GraphQL CI](https://github.com/Jeiikot/starwars-graphql-django/actions/workflows/ci-tests.yml/badge.svg)
+![Last Commit](https://img.shields.io/github/last-commit/Jeiikot/starwars-graphql-django)
+
+
+
 
 A GraphQL API built with **Django** and **Graphene** to manage information from the Star Wars universe: characters, movies, and planets.
 Easily query, create, and relate entities with full validation and real-world data.
