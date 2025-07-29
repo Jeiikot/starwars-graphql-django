@@ -6,6 +6,25 @@ Easily query, create, and relate entities with full validation and real-world da
 
 ---
 
+📌 About This Repository & Branches
+
+This project started as part of the LQN Technical Challenge.
+
+   - The code submitted for the challenge is in the branch: lqn-technical-tes
+
+   - The main and develop branches include further improvements.
+
+   > Feel free to check the lqn-test branch for the exact version delivered for the technical assessment.
+ 
+🌐 [Live Demo on Render](https://starwars-graphql-django.onrender.com/graphql/)
+
+> Try the project live! Explore the API through the GraphiQL playground hosted on Render.
+
+>  ⚠️ Note: It may take a few seconds to wake up if the server was inactive (free tier limitation).
+
+
+---
+
 ## 🚀 Description
 
 This project enables you to **query, filter, and create** characters, movies, and planets from the Star Wars universe through a **Relay-compatible GraphQL API**.
